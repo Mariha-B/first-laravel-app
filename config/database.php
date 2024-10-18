@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'sqlite'),
+    'default' => env('DB_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -48,7 +48,7 @@ return [
             'host' => env('DB_HOST', 'database'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'mywebsite'),
-            'username' => env('DB_USERNAME', 'root'),
+            'username' => env('DB_USERNAME', 'laravel'),
             'password' => env('DB_PASSWORD', 'secret'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => env('DB_CHARSET', 'utf8mb4'),
