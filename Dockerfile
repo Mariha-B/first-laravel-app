@@ -1,18 +1,17 @@
-FROM php:8.2-apache
+FROM php:8.2 as php
 
-RUN apt-get update && \
-    apt-get install -y \
-    libzip-dev \
-    zip
+RUN apt-get update -y
+RUN apt-get install -y unzip libpq-dev libcurl4-gnutls-dev
+RUN docker-php-ext-install pdo pdo_mysql bcmath
 
-RUN a2enmod rewrite headers
-RUN docker-php-ext-install pdo_mysql zip
+RUN pecl install -o -f redis \
+    && rm -rf /tmp/pear \
+    && docker-php-ext-enable redis
 
-WORKDIR /app
-COPY . /app
+WORKDIR /var/www
+COPY . .
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN composer install
+COPY --from=composer:2.7.8 /usr/bin/composer /usr/bin/composer
 
-CMD php artisan serve --host=0.0.0.0 --port=8000
-EXPOSE 8000
+ENV PORT=8000
+ENTRYPOINT [ "docker/entrypoint.sh" ]
